@@ -11,6 +11,7 @@ import HaruIt.domain.users.entity.User;
 import HaruIt.domain.users.repository.DeviceRepository;
 import HaruIt.domain.users.repository.UserRepository;
 import HaruIt.global.exception.CustomException;
+import HaruIt.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -43,9 +44,9 @@ public class UserService {
     public void changePassword(Long userId, PasswordChangeRequest req) {
         User user = getUser(userId);
         if (!passwordEncoder.matches(req.currentPassword(), user.getPassword()))
-            throw new CustomException(HttpStatus.BAD_REQUEST, "현재 비밀번호가 일치하지 않습니다.");
+            throw new CustomException(ErrorCode.PASSWORD_MISMATCH);
         if (req.currentPassword().equals(req.newPassword()))
-            throw new CustomException(HttpStatus.BAD_REQUEST, "기존 비밀번호와 같습니다.");
+            throw new CustomException(ErrorCode.SAME_PASSWORD);
         user.changePassword(passwordEncoder.encode(req.newPassword()));
     }
 
@@ -93,6 +94,6 @@ public class UserService {
 
     private User getUser(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
     }
 }

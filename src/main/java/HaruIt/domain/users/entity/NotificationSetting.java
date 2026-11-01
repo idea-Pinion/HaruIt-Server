@@ -1,6 +1,7 @@
 package HaruIt.domain.users.entity;
 
 import HaruIt.global.exception.CustomException;
+import HaruIt.global.exception.ErrorCode;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
@@ -21,7 +22,7 @@ public class NotificationSetting {
                        Boolean caffeineAlarm, Boolean weeklyReportAlarm) {
         if (minutesBefore != null &&
                 (minutesBefore < MIN_MINUTES_BEFORE || minutesBefore > MAX_MINUTES_BEFORE)) {
-            throw new CustomException(HttpStatus.BAD_REQUEST, "알림 시간은 5~120분 사이여야 합니다.");
+            throw new CustomException(ErrorCode.INVALID_ALARM_MINUTES);
         }
         if (bedtimeAlarm != null) this.bedtimeAlarm = bedtimeAlarm;
         if (minutesBefore != null) this.bedtimeAlarmMinutesBefore = minutesBefore;

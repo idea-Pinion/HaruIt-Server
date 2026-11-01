@@ -1,6 +1,7 @@
 package HaruIt.domain.users.entity;
 
 import HaruIt.global.exception.CustomException;
+import HaruIt.global.exception.ErrorCode;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
@@ -25,7 +26,7 @@ public class SleepSetting {
         LocalTime newBed = bedTime != null ? bedTime : this.targetBedTime;
         LocalTime newWake = wakeTime != null ? wakeTime : this.targetWakeTime;
         if (newBed.equals(newWake)) {
-            throw new CustomException(HttpStatus.NOT_FOUND, "취침 시각과 기상 시각이 같을 수 없습니다.");
+            throw new CustomException(ErrorCode.INVALID_SLEEP_TIME);
         }
         this.targetBedTime = newBed;
         this.targetWakeTime = newWake;
