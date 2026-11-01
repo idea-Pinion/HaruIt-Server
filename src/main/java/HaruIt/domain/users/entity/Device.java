@@ -14,6 +14,8 @@ import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 
@@ -32,6 +34,7 @@ public class Device extends BaseTimeEntity {
     private String token;
 
     @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.VARCHAR)
     @Column(nullable = false, length = 10)
     private Platform platform;
 
@@ -45,7 +48,7 @@ public class Device extends BaseTimeEntity {
         this.lastSeenAt = now;
     }
 
-    public void assign(User user, Platform platform, LocalDateTime now) {
+    public void reassign(User user, Platform platform, LocalDateTime now) {
         this.user = user;
         this.platform = platform;
         this.lastSeenAt = now;
