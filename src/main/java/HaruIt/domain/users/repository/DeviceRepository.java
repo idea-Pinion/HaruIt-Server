@@ -12,8 +12,8 @@ public interface DeviceRepository extends JpaRepository<Device, Long> {
     Optional<Device> findByToken(String token);
 
     @Modifying(flushAutomatically = true, clearAutomatically = true)
-    @Query("delete from Device d where d.id = :id and d.user.id = :userId")
-    int deleteByIdAndUserId(@Param("id") Long id, @Param("userId") Long userId);
+    @Query("delete from Device d where d.token = :token and d.user.id = :userId")
+    int deleteByTokenAndUserId(@Param("token") String token, @Param("userId") Long userId);
 
     @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query("delete from Device d where d.user.id = :userId")
