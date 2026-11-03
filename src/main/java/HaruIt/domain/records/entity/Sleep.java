@@ -2,6 +2,7 @@ package HaruIt.domain.records.entity;
 
 import HaruIt.global.entity.BaseTimeEntity;
 import HaruIt.global.exception.CustomException;
+import HaruIt.global.exception.ErrorCode;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -45,16 +46,16 @@ public class Sleep extends BaseTimeEntity {
     @Column(nullable = false)
     private LocalDate sleepDate;
 
-    public Sleep(Long userId, LocalDateTime bedtime, LocalDateTime wakeTime) {
+    public Sleep(Long userId, LocalDateTime bedTime, LocalDateTime wakeTime) {
         this.userId = userId;
-        update(bedtime, wakeTime);
+        update(bedTime, wakeTime);
     }
 
     public void update(LocalDateTime bedTime, LocalDateTime wakeTime) {
-        Duration d = Duration.between(this.bedTime, wakeTime);
+        Duration d = Duration.between(bedTime, wakeTime);
         if (d.isNegative() || d.isZero() || d.compareTo(MAX_DURATION) > 0)
-            throw new CustomException(HttpStatus.BAD_REQUEST, "수면 시간은 0시간 초과 24시간 이하여야 합니다.");
-        this.bedTime = this.bedTime;
+            throw new CustomException(ErrorCode.INVALID_SLEEP_RANGE);
+        this.bedTime = bedTime;
         this.wakeTime = wakeTime;
         this.sleepDate = wakeTime.toLocalDate();
     }

@@ -2,6 +2,7 @@ package HaruIt.domain.records.entity;
 
 import HaruIt.global.entity.BaseTimeEntity;
 import HaruIt.global.exception.CustomException;
+import HaruIt.global.exception.ErrorCode;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -59,8 +60,8 @@ public class CaffeineItem extends BaseTimeEntity {
 
     private static void validate(String name, int caffeineMg) {
         if (name == null || name.isBlank() || name.length() > 30)
-            throw new CustomException(HttpStatus.BAD_REQUEST, "음료 이름은 1~30자여야 합니다.");
+            throw new CustomException(ErrorCode.INVALID_INPUT, "음료 이름은 1~30자여야 합니다.");
         if (caffeineMg <= 0 || caffeineMg > MAX_CAFFEINE_MG)
-            throw new CustomException(HttpStatus.BAD_REQUEST, "카페인 함량은 1~1000mg 사이여야 합니다.");
+            throw new CustomException(ErrorCode.INVALID_INPUT, "카페인 함량은 1~1000mg 사이여야 합니다.");
     }
 }

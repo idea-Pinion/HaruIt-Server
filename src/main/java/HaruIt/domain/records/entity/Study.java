@@ -2,6 +2,7 @@ package HaruIt.domain.records.entity;
 
 import HaruIt.global.entity.BaseTimeEntity;
 import HaruIt.global.exception.CustomException;
+import HaruIt.global.exception.ErrorCode;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -51,9 +52,9 @@ public class Study extends BaseTimeEntity {
 
     public void update(LocalDate studyDate, String subject, int minutes) {
         if (subject == null || subject.isBlank() || subject.length() > MAX_SUBJECT_LENGTH)
-            throw new CustomException(HttpStatus.BAD_REQUEST, "과목은 1~30자여야 합니다.");
+            throw new CustomException(ErrorCode.INVALID_INPUT, "과목은 1~30자여야 합니다.");
         if (minutes <= 0 || minutes > MAX_MINUTES)
-            throw new CustomException(HttpStatus.BAD_REQUEST, "학습 시간은 1~1440분이어야 합니다.");
+            throw new CustomException(ErrorCode.INVALID_INPUT, "학습 시간은 1~1440분이어야 합니다.");
         this.studyDate = studyDate;
         this.subject = subject;
         this.minutes = minutes;

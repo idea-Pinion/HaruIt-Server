@@ -2,6 +2,7 @@ package HaruIt.domain.records.entity;
 
 import HaruIt.global.entity.BaseTimeEntity;
 import HaruIt.global.exception.CustomException;
+import HaruIt.global.exception.ErrorCode;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -52,9 +53,9 @@ public class Condition extends BaseTimeEntity {
 
     public void update(int score, String memo) {
         if (score < 1 || score > 5)
-            throw new CustomException(HttpStatus.BAD_REQUEST, "컨디션 점수는 1~5 사이여야 합니다.");
+            throw new CustomException(ErrorCode.INVALID_INPUT, "컨디션 점수는 1~5 사이여야 합니다.");
         if (memo != null && memo.length() > 200)
-            throw new CustomException(HttpStatus.BAD_REQUEST, "메모는 200자 이하여야 합니다.");
+            throw new CustomException(ErrorCode.INVALID_INPUT, "메모는 200자 이하여야 합니다.");
         this.score = score;
         this.memo = (memo == null || memo.isBlank()) ? null : memo;
     }
