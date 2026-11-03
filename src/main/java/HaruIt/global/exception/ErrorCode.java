@@ -22,7 +22,15 @@ public enum ErrorCode {
     PASSWORD_MISMATCH(HttpStatus.BAD_REQUEST, "U002", "현재 비밀번호가 일치하지 않습니다."),
     SAME_PASSWORD(HttpStatus.BAD_REQUEST, "U003", "기존 비밀번호와 같습니다."),
     INVALID_SLEEP_TIME(HttpStatus.BAD_REQUEST, "U004", "취침 시각과 기상 시각이 같을 수 없습니다."),
-    INVALID_ALARM_MINUTES(HttpStatus.BAD_REQUEST, "U005", "알림 시간은 5~120분 사이여야 합니다.");
+    INVALID_ALARM_MINUTES(HttpStatus.BAD_REQUEST, "U005", "알림 시간은 5~120분 사이여야 합니다."),
+
+    RECORD_NOT_FOUND(HttpStatus.NOT_FOUND, "R001", "기록을 찾을 수 없습니다."),
+    FUTURE_RECORD(HttpStatus.BAD_REQUEST, "R002", "미래 시각은 기록할 수 없습니다."),
+    INVALID_SLEEP_RANGE(HttpStatus.BAD_REQUEST, "R003", "수면 시간은 0시간 초과 24시간 이하여야 합니다."),
+    SLEEP_RECORD_OVERLAP(HttpStatus.CONFLICT, "R004", "겹치는 수면 기록이 있습니다."),
+    CONDITION_ALREADY_EXISTS(HttpStatus.CONFLICT, "R005", "해당 날짜의 컨디션 기록이 이미 있습니다."),
+    CAFFEINE_ITEM_NOT_FOUND(HttpStatus.NOT_FOUND, "R006", "음료를 찾을 수 없습니다."),
+    PRESET_ITEM_NOT_DELETABLE(HttpStatus.BAD_REQUEST, "R007", "기본 음료는 삭제할 수 없습니다.");
 
     private final HttpStatus status;
     private final String code;
