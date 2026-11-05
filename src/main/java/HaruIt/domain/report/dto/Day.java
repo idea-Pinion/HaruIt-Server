@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public record Day(
         LocalDate date,
-        long sleepMinutes,
+        Integer sleepMinutes,
         int studyMinutes,
         Integer condition,
         int caffeineMg
