@@ -9,7 +9,6 @@ import HaruIt.domain.targets.repository.TargetRepository;
 import HaruIt.global.exception.CustomException;
 import HaruIt.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

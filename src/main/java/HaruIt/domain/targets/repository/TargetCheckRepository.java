@@ -33,6 +33,4 @@ public interface TargetCheckRepository extends JpaRepository<TargetCheck, Long> 
         on duplicate key update target_id = target_id
         """, nativeQuery = true)
     void insertIfAbsent(@Param("targetId") Long targetId, @Param("date") LocalDate date);
-
-    void deleteByTargetIdAndCheckDate(Long id, LocalDate date);
 }

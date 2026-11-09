@@ -2,14 +2,12 @@ package HaruIt.domain.daily.service;
 
 import HaruIt.domain.daily.dto.DailyResponse;
 import HaruIt.domain.daily.dto.DailyUpdateRequest;
-import HaruIt.domain.records.entity.Condition;
 import HaruIt.domain.records.repository.CaffeineIntakeRepository;
 import HaruIt.domain.records.repository.ConditionRepository;
 import HaruIt.domain.records.repository.SleepRepository;
 import HaruIt.domain.records.repository.StudyRepository;
 import HaruIt.domain.records.service.ConditionService;
 import HaruIt.domain.targets.entity.Target;
-import HaruIt.domain.targets.entity.TargetCheck;
 import HaruIt.domain.targets.repository.TargetCheckRepository;
 import HaruIt.domain.targets.repository.TargetRepository;
 import HaruIt.domain.targets.service.TargetService;
@@ -23,7 +21,6 @@ import java.time.Clock;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -72,22 +69,5 @@ public class DailyService {
             });
 
         return get(userId, date);
-    }
-
-    private void upsertCondition(Long userId, LocalDate date, DailyUpdateRequest.ConditionPart c) {
-        conditionRepository.findByUserIdAndRecordDate(userId, date).ifPresentOrElse(
-                existing -> existing.update(c.score(), c.memo()),
-                () -> conditionRepository.save(new Condition(userId, date, c.score(), c.memo()))
-        );
-    }
-
-    private void applyCheck(Long userId, LocalDate date, LocalDate today, DailyUpdateRequest.TargetCheckPart t) {
-        Target target = targetRepository.findByIdAndUserId(t.targetId(), userId)
-                .orElseThrow(() -> new CustomException(ErrorCode.RESOURCE_NOT_FOUND, "목표를 찾을 수 없습니다."));
-        target.validateCheckable(date, today);
-
-        boolean exists = targetCheckRepository.existsByTargetIdAndCheckDate(target.getId(), date);
-        if (t.checked() && !exists) targetCheckRepository.save(new TargetCheck(target.getId(), date));
-        if (!t.checked() && exists) targetCheckRepository.deleteByTargetIdAndCheckDate(target.getId(), date);
     }
 }
