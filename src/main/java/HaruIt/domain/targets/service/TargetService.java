@@ -7,6 +7,7 @@ import HaruIt.domain.targets.entity.Target;
 import HaruIt.domain.targets.repository.TargetCheckRepository;
 import HaruIt.domain.targets.repository.TargetRepository;
 import HaruIt.global.exception.CustomException;
+import HaruIt.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -65,7 +66,7 @@ public class TargetService {
         LocalDate start = (from == null || from.isBefore(target.getStartDate())) ? target.getStartDate() : from;
         LocalDate end = (to == null || to.isAfter(today)) ? today : to;
         if (start.isAfter(end))
-            throw new CustomException(HttpStatus.BAD_REQUEST, "조회 기간이 올바르지 않습니다.");
+            throw new CustomException(ErrorCode.INVALID_PERIOD);
 
         long total = ChronoUnit.DAYS.between(start, end) + 1;
         long checked = checkRepository.countByTargetIdAndCheckDateBetween(targetId, start, end);
@@ -87,7 +88,7 @@ public class TargetService {
 
     private Target get(Long userId, Long targetId) {
         return targetRepository.findByIdAndUserId(targetId, userId)
-                .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "목표를 찾을 수 없습니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.TARGET_NOT_FOUND));
     }
 
     private LocalDate today() {
