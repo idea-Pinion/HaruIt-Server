@@ -60,7 +60,7 @@ public class ConditionService {
     public void upsert(Long userId, LocalDate date, int score, String memo) {
         checkNotFuture(date);
         repository.findByUserIdAndRecordDate(userId, date).ifPresentOrElse(
-                c -> c.update(score, memo),
+                c -> c.update(score, memo == null ? c.getMemo() : memo),
                 () -> repository.save(new Condition(userId, date, score, memo))
         );
     }
