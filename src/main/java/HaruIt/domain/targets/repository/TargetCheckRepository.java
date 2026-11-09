@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -35,6 +34,5 @@ public interface TargetCheckRepository extends JpaRepository<TargetCheck, Long> 
         """, nativeQuery = true)
     void insertIfAbsent(@Param("targetId") Long targetId, @Param("date") LocalDate date);
 
-    List<TargetCheck> findAllByTargetIdInAndCheckDate(Collection<Long> targetIds, LocalDate checkDate);
-    void deleteByTargetIdAndCheckDate(Long targetId, LocalDate checkDate);
+    void deleteByTargetIdAndCheckDate(Long id, LocalDate date);
 }

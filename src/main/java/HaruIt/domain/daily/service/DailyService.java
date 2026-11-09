@@ -42,9 +42,8 @@ public class DailyService {
 
     public DailyResponse get(Long userId, LocalDate date) {
         List<Target> targets = targetRepository.findAllByUserIdAndStartDateLessThanEqualOrderByIdAsc(userId, date);
-        Set<Long> checkedIds = targets.isEmpty() ? Set.of() :
-                targetCheckRepository.findAllByTargetIdInAndCheckDate(targets.stream().map(Target::getId).toList(), date)
-                .stream().map(TargetCheck::getTargetId).collect(Collectors.toSet());
+        Set<Long> checkedIds = targets.isEmpty() ? Set.of()
+                : targetCheckRepository.findCheckedTargetIds(targets.stream().map(Target::getId).toList(), date);
 
         return DailyResponse.of(
                 date,
