@@ -30,7 +30,12 @@ public enum ErrorCode {
     SLEEP_RECORD_OVERLAP(HttpStatus.CONFLICT, "R004", "겹치는 수면 기록이 있습니다."),
     CONDITION_ALREADY_EXISTS(HttpStatus.CONFLICT, "R005", "해당 날짜의 컨디션 기록이 이미 있습니다."),
     CAFFEINE_ITEM_NOT_FOUND(HttpStatus.NOT_FOUND, "R006", "음료를 찾을 수 없습니다."),
-    PRESET_ITEM_NOT_DELETABLE(HttpStatus.BAD_REQUEST, "R007", "기본 음료는 삭제할 수 없습니다.");
+    PRESET_ITEM_NOT_DELETABLE(HttpStatus.BAD_REQUEST, "R007", "기본 음료는 삭제할 수 없습니다."),
+
+    TARGET_NOT_FOUND(HttpStatus.NOT_FOUND, "T001", "목표를 찾을 수 없습니다."),
+    INVALID_CHECK_DATE(HttpStatus.BAD_REQUEST, "T002", "체크할 수 없는 날짜입니다."),
+    INVALID_TARGET_TITLE(HttpStatus.BAD_REQUEST, "T003", "목표 제목은 1~50자여야 합니다."),
+    INVALID_PERIOD(HttpStatus.BAD_REQUEST, "T004", "조회 기간이 올바르지 않습니다.");
 
     private final HttpStatus status;
     private final String code;
