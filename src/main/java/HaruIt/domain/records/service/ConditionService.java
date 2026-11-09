@@ -56,4 +56,12 @@ public class ConditionService {
         return repository.findByIdAndUserId(recordId, userId)
                 .orElseThrow(() -> new CustomException(ErrorCode.RECORD_NOT_FOUND));
     }
+
+    public void upsert(Long userId, LocalDate date, int score, String memo) {
+        checkNotFuture(date);
+        repository.findByUserIdAndRecordDate(userId, date).ifPresentOrElse(
+                c -> c.update(score, memo),
+                () -> repository.save(new Condition(userId, date, score, memo))
+        );
+    }
 }
