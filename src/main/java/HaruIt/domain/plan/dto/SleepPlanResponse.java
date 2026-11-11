@@ -8,7 +8,7 @@ public record SleepPlanResponse(
         LocalDateTime bedTime,
         LocalDateTime wakeTime,
         long targetSleepMinutes,
-        LocalDateTime winDownAt,
+        LocalDateTime windDownAt,
         LocalDateTime caffeineCutoffAt,
         int caffeineAtBedtimeMg,
         boolean caffeineSafe
