@@ -34,8 +34,7 @@ public class PlanService {
 
         if (date == null) {
             LocalDateTime now = LocalDateTime.now(clock);
-            boolean crossesMidnight = sleep.getTargetBedTime().isAfter(sleep.getTargetWakeTime());
-            date = (crossesMidnight && now.toLocalTime().isBefore(sleep.getTargetWakeTime()))
+            date = now.toLocalTime().isBefore(sleep.getTargetWakeTime())
                     ? now.toLocalDate().minusDays(1)
                     : now.toLocalDate();
         }
