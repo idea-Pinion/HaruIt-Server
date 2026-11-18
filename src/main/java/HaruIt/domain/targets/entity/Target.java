@@ -12,7 +12,7 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.http.HttpStatus;
+import HaruIt.global.exception.ErrorCode;
 
 import java.time.LocalDate;
 
@@ -50,11 +50,11 @@ public class Target extends BaseTimeEntity {
 
     public void validateCheckable(LocalDate date, LocalDate today) {
         if (date.isBefore(startDate) || date.isAfter(today))
-            throw new CustomException(HttpStatus.BAD_REQUEST, "체크할 수 없는 날짜입니다.");
+            throw new CustomException(ErrorCode.INVALID_CHECK_DATE);
     }
 
     public void validateTitle(String title) {
         if (title == null || title.isBlank() || title.length() > MAX_TITLE_LENGTH)
-            throw new CustomException(HttpStatus.BAD_REQUEST, "목표 제목은 1~50자여야 합니다.");
+            throw new CustomException(ErrorCode.INVALID_TARGET_TITLE);
     }
 }

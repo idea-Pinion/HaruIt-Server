@@ -35,21 +35,28 @@ public class CaffeineForecastService {
         CaffeineItem item = caffeineService.getItem(userId, itemId);
         LocalDateTime bedtime = nextBedTime(userId, base);
 
-        // 24시간 이전 섭취분은 반감기 5시간 기준 4% 미만이라 무시
-        List<CaffeineIntake> intakes = intakeRepository
-                .findAllByUserIdAndIntakeAtGreaterThanEqualAndIntakeAtLessThanOrderByIntakeAtAsc(
-                        userId, bedtime.minusDays(1), bedtime);
-
-        double current = intakes.stream()
-                .mapToDouble(i -> residual(i.getCaffeineMg(), i.getIntakeAt(), bedtime))
-                .sum();
+        double current = residualAt(userId, bedtime);
         double ifDrink = current + residual(item.getCaffeineMg(), base, bedtime);
 
         return new CaffeineForecastResponse(
                 itemId, base, bedtime,
                 (int) Math.round(current), (int) Math.round(ifDrink),
-                ifDrink < SLEEP_SAFE_MG
+                isSleepSafe(ifDrink)
         );
+    }
+
+    // 24시간 이전 섭취분은 반감기 5시간 기준 4% 미만이라 무시
+    public double residualAt(Long userId, LocalDateTime target) {
+        List<CaffeineIntake> intakes = intakeRepository
+                .findAllByUserIdAndIntakeAtGreaterThanEqualAndIntakeAtLessThanOrderByIntakeAtAsc(
+                        userId, target.minusDays(1), target);
+        return intakes.stream()
+                .mapToDouble(i -> residual(i.getCaffeineMg(), i.getIntakeAt(), target))
+                .sum();
+    }
+
+    public static boolean isSleepSafe(double mg) {
+        return mg < SLEEP_SAFE_MG;
     }
 
     private LocalDateTime nextBedTime(Long userId, LocalDateTime base) {
